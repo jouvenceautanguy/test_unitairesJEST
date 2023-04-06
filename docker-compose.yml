@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  node:
+    container_name: project_node
+    image: "node:latest"
+    working_dir: /home/node/app
+    env_file:
+      - .env
+    command:
+      - /bin/sh
+      - "-c"
+      - "npm install && npm start"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./src:/home/node/app"
+    links:
+      - mongo
+    networks:
+      - b3-api-project
+  mongo:
+    container_name: b3-api-project-mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - b3-api-project
+networks:
+  b3-api-project:
+    driver: bridge
